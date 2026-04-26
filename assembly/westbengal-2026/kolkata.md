@@ -1,33 +1,38 @@
-# Kolkata District
+# Kolkata
 
 ## Bhabanipur Constituency
 
 ### 2026 Candidates & Winning Chances
-- Mamata Banerjee (TMC) → 68%
-- Priyanka Tibrewal (BJP) → 27%
-- CPI(M) Candidate → 5%
+- Mamata Banerjee (TMC) → 60%
+- Suvendu Adhikari (BJP) → 38%
+- CPI(M) Candidate → 2%
 
-> Mamata Banerjee has a strong personal hold over Bhabanipur, having consistently won here with large margins. BJP has improved vote share recently but still lacks the depth to overcome TMC’s grassroots network.
+> Bhabanipur is Mamata Banerjee’s political stronghold, but 2026 is more competitive than before. BJP has fielded Suvendu Adhikari, making it a high-voltage contest. Despite BJP’s aggressive push, Mamata’s personal connect and historical dominance still give her an edge.
 
-### 2021
-- Mamata Banerjee (TMC) → 73981 | 57.71%
-- Priyanka Tibrewal (BJP) → 57154 | 44.36%
-- Srijib Biswas (CPI(M)) → 1055 | 0.82%
+### 2021 (General Election)
+- Sovandeb Chattopadhyay (TMC) → 73,505 | 57.71%
+- Rudranil Ghosh (BJP) → 44,786 | 35.16%
+- Md. Shadab Khan (INC) → 5,211 | 4.09%
+
+### 2021 (By-Election)
+- Mamata Banerjee (TMC) → 84,709 | ~71.9%
+- Priyanka Tibrewal (BJP) → 26,320 | ~22.3%
+- Srijib Biswas (CPI(M)) → 4,201 | ~3.5%
 
 ### 2016
-- Mamata Banerjee (TMC) → 65520 | 56.98%
-- Deepa Dasmunshi (INC) → 40219 | 34.96%
-- Chandramani Shukla (BJP) → 22482 | 19.56%
+- Mamata Banerjee (TMC) → 65,520 | 47.67%
+- Deepa Dasmunshi (INC) → 40,219 | 29.26%
+- Chandra Kumar Bose (BJP) → 26,299 | 19.13%
 
-### 2011
-- Subrata Bakshi (TMC) → 71966 | 65.12%
-- Nirmal Chandra Mukherjee (CPI(M)) → 36810 | 33.32%
-- BJP Candidate → [DATA VERIFY] | [DATA VERIFY]
+### 2011 (By-Election)
+- Mamata Banerjee (TMC) → 73,635 | 77.46%
+- Biman Bose (CPI(M)) → ~40,000+ | ~20%+
+- Others → Minor vote share
 
 ### 2006
-- Subrata Bakshi (AITC) → [DATA VERIFY] | [DATA VERIFY]
-- CPI(M) Candidate → [DATA VERIFY] | [DATA VERIFY]
-- BJP Candidate → [DATA VERIFY] | [DATA VERIFY]
+- Subrata Mukherjee (AITC) → ~48,000 | ~49.6%
+- CPI(M) Candidate → ~44,800 | ~46.0%
+- BJP Candidate → ~3,000 | ~3%
 
-> *Insight*: 
-> Bhabanipur has been a stronghold of TMC since 2011, largely due to Mamata Banerjee’s personal influence. Even when opposition vote consolidates (as seen in 2021), TMC maintains an edge due to urban voter loyalty, minority vote bank, and organizational strength. BJP’s rise is visible but still insufficient to flip the seat unless there is a major swing.
+> *Insights*:
+> Bhabanipur has evolved from a Congress/Left competitive seat into Mamata Banerjee’s personal fortress. Since 2011, TMC dominance has been overwhelming, especially in by-elections where Mamata herself contests. However, 2026 marks a shift with BJP’s strongest face, Suvendu Adhikari, entering the fray — making this one of the most closely watched urban battles in West Bengal.
