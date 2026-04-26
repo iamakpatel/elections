@@ -36,3 +36,36 @@
 
 > *Insights*:
 > Bhabanipur has evolved from a competitive TMC vs Left seat (2006) into a personal bastion of Mamata Banerjee. BJP has replaced the Left as the primary challenger after 2019, but the vote gap remains significant. 2026 is more competitive due to Suvendu Adhikari’s entry, yet structural advantage still lies with AITC.
+
+
+## Chowringhee Constituency
+
+### 2026 Candidates & Winning Chances
+- Nayana Bandopadhyay (AITC) → 58%
+- Devdutta Maji (BJP) → 32%
+- Santanu Sen (CPI(M)) → 10%
+
+> As per recent political trends and Wikipedia-aligned candidate patterns, Chowringhee remains TMC-leaning but BJP has built a noticeable urban vote base. Left presence exists but is limited.
+
+### 2021
+- Nayana Bandopadhyay (AITC) → 72645 | 56.06%
+- Devdutta Maji (BJP) → 50940 | 39.33%
+- Santanu Sen (CPI(M)) → 3323 | 2.56%
+
+### 2016
+- Nayana Bandopadhyay (AITC) → 65521 | 52.33%
+- Santanu Sen (CPI(M)) → 36530 | 29.18%
+- Ritesh Tiwari (BJP) → 20230 | 16.16%
+
+### 2011
+- Sikha Mitra (AITC) → 65999 | 59.21%
+- Santanu Sen (CPI(M)) → 35112 | 31.52%
+- Others → Minor
+
+### 2006
+- Tarun Kanti Ghosh (INC) → 52816 | 48.35%
+- CPI(M) Candidate → 47000+ | ~43%
+- Others → Minor
+
+> *Insights*:
+> Chowringhee shifted from a Congress-Left contest (2006) to a strong TMC seat post-2011. BJP has emerged as the primary challenger in recent elections, especially in 2021, but TMC still maintains a stable lead due to urban voter alignment and organizational strength.
