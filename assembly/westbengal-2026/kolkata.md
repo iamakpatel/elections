@@ -2,7 +2,7 @@
 
 ## Bhabanipur Constituency
 
-## 2026 Candidates & Winning Chances
+### 2026 Candidates & Winning Chances
 - Mamata Banerjee (TMC) → 68%
 - Priyanka Tibrewal (BJP) → 27%
 - CPI(M) Candidate → 5%
@@ -29,5 +29,5 @@
 - CPI(M) Candidate → [DATA VERIFY] | [DATA VERIFY]
 - BJP Candidate → [DATA VERIFY] | [DATA VERIFY]
 
-> *Insights*
+> *Insight*: 
 > Bhabanipur has been a stronghold of TMC since 2011, largely due to Mamata Banerjee’s personal influence. Even when opposition vote consolidates (as seen in 2021), TMC maintains an edge due to urban voter loyalty, minority vote bank, and organizational strength. BJP’s rise is visible but still insufficient to flip the seat unless there is a major swing.
