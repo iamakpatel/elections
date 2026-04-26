@@ -10,7 +10,7 @@
 > Bhabanipur remains Mamata Banerjee’s stronghold, but BJP has made the contest high-profile by fielding Suvendu Adhikari. Despite BJP’s growth in urban Bengal, Mamata’s personal influence and historical dominance give her a clear edge.
 
 ### 2021 (General Election)
-- Sovandeb Chattopadhyay (AITC) → 73,505 | 57.71% :contentReference[oaicite:0]{index=0}
+- Sovandeb Chattopadhyay (AITC) → 73,505 | 57.71%
 - Rudranil Ghosh (BJP) → 44,786 | 35.16%
 - Md. Shadab Khan (INC) → 5,211 | 4.09%
 
