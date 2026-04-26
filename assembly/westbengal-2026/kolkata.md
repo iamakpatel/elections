@@ -3,9 +3,9 @@
 <H2> Bhabanipur</H2>
 
 <H3> 2026 Candidates & Winning Chances</H3>
-- Mamata Banerjee (TMC) → 68%
-- Priyanka Tibrewal (BJP) → 27%
-- CPI(M) Candidate → 5%
+-Mamata Banerjee (TMC) → 68%
+-Priyanka Tibrewal (BJP) → 27%
+-CPI(M) Candidate → 5%
 
 Strong TMC dominance here, especially after the 2021 by-election where Mamata Banerjee consolidated personal vote bank. BJP has urban pockets but lacks consistent booth-level strength. Left presence is now mostly symbolic.
 
