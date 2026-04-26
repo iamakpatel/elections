@@ -9,9 +9,9 @@
 Strong TMC dominance here, especially after the 2021 by-election where Mamata Banerjee consolidated personal vote bank. BJP has urban pockets but lacks consistent booth-level strength. Left presence is now mostly symbolic.
 
 <H3> 2021
-* Mamata Banerjee (TMC) → 73,490 | 57.72%
-* Priyanka Tibrewal (BJP) → 52,660 | 41.36%
-* Srijib Biswas (CPI(M)) → 1,251 | 0.98%
+*Mamata Banerjee (TMC) → 73,490 | 57.72%
+*Priyanka Tibrewal (BJP) → 52,660 | 41.36%
+*Srijib Biswas (CPI(M)) → 1,251 | 0.98%
 
 <H3> 2016
 * Sovandeb Chattopadhyay (TMC) → 73,728 | 62.36%
