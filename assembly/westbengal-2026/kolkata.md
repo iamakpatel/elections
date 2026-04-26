@@ -1,8 +1,8 @@
-<H1> Kolkata
+<H1> Kolkata</H1>
 
-<H2> Bhabanipur
+<H2> Bhabanipur</H2>
 
-<H3> 2026 Candidates & Winning Chances
+<H3> 2026 Candidates & Winning Chances</H3>
   - Mamata Banerjee (TMC) → 68%
   - Priyanka Tibrewal (BJP) → 27%
   - CPI(M) Candidate → 5%
