@@ -1,17 +1,106 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>West Bengal Election 2026</title>
+  <title>WB Election 2026 Dashboard</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      margin: 40px;
+      background-color: #f5f5f5;
+    }
+
+    h1 {
+      color: #2c3e50;
+    }
+
+    select {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+
+    .chart-container {
+      margin-top: 30px;
+    }
+  </style>
 </head>
+
 <body>
 
-<h1>West Bengal Assembly Election 2026</h1>
+<h1>West Bengal Election 2026</h1>
 
-<h2>Seat Projection 1</h2>
-<div class="flourish-embed flourish-chart" data-src="visualisation/28772873">
-  <script src="https://public.flourish.studio/resources/embed.js"></script>
-  <noscript><img src="https://public.flourish.studio/visualisation/28772873/thumbnail" width="100%" alt="chart visualization" /></noscript>
-</div>  
+<!-- Dropdowns -->
+<label>District:</label>
+<select id="district" onchange="updateConstituencies()">
+  <option value="">Select District</option>
+  <option value="kolkata">Kolkata</option>
+  <option value="howrah">Howrah</option>
+</select>
+
+<label>Constituency:</label>
+<select id="constituency" onchange="loadChart()">
+  <option value="">Select Constituency</option>
+</select>
+
+<!-- Chart -->
+<div class="chart-container">
+  <div id="chart"></div>
+</div>
+
+<script src="https://public.flourish.studio/resources/embed.js"></script>
+
+<script>
+// Mapping: District → Constituency → Flourish ID
+const data = {
+  kolkata: {
+    bhabanipur: "visualisation/28772873",
+    entally: "visualisation/28772873"
+  },
+  howrah: {
+    shibpur: "visualisation/28772873",
+    uluberia: "visualisation/28772873"
+  }
+};
+
+// Populate constituency dropdown
+function updateConstituencies() {
+  const district = document.getElementById("district").value;
+  const constituencyDropdown = document.getElementById("constituency");
+
+  constituencyDropdown.innerHTML = '<option value="">Select Constituency</option>';
+
+  if (district && data[district]) {
+    Object.keys(data[district]).forEach(c => {
+      const option = document.createElement("option");
+      option.value = c;
+      option.text = c.charAt(0).toUpperCase() + c.slice(1);
+      constituencyDropdown.appendChild(option);
+    });
+  }
+
+  document.getElementById("chart").innerHTML = "";
+}
+
+// Load Flourish chart
+function loadChart() {
+  const district = document.getElementById("district").value;
+  const constituency = document.getElementById("constituency").value;
+
+  if (district && constituency) {
+    const chartId = data[district][constituency];
+
+    document.getElementById("chart").innerHTML = `
+      <div class="flourish-embed" data-src="${chartId}"></div>
+    `;
+
+    // Re-run Flourish embed script
+    if (window.Flourish) {
+      window.Flourish.embed();
+    }
+  }
+}
+</script>
 
 </body>
 </html>
