@@ -22,7 +22,6 @@
     h4 {
       text-align: center;
       margin-top: 20px;
-      font-weight: 600;
     }
 
     .card {
@@ -32,22 +31,33 @@
     }
 
     .chart-container {
-      height: 65vh;
+      height: 60vh;
     }
 
-    /* Dropdown label color */
-    .input-field label {
-      color: #aaa;
+    #candidateList {
+      list-style: none;
+      padding: 0;
     }
 
-    /* Dropdown text */
-    .select-dropdown {
-      color: white;
+    #candidateList li {
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background: #2a2a2a;
     }
 
-    /* Selected item */
-    .dropdown-content li>a {
+    .winner {
+      border-left: 5px solid #4caf50;
+      background: #1b5e20;
+    }
+
+    .badge-winner {
+      background: gold;
       color: black;
+      padding: 2px 6px;
+      border-radius: 5px;
+      margin-left: 6px;
+      font-size: 12px;
     }
   </style>
 </head>
@@ -59,7 +69,6 @@
 
   <!-- Filters -->
   <div class="row">
-
     <div class="input-field col s12 m4">
       <select id="year"></select>
       <label>Year</label>
@@ -74,19 +83,30 @@
       <select id="constituency"></select>
       <label>Constituency</label>
     </div>
-
   </div>
 
-  <!-- Chart -->
-  <div class="card">
-    <div class="chart-container">
-      <canvas id="chart"></canvas>
+  <!-- Layout -->
+  <div class="row">
+
+    <!-- LEFT: Candidates -->
+    <div class="col s12 m4">
+      <div class="card">
+        <h6 style="text-align:center;">Candidates</h6>
+        <ul id="candidateList"></ul>
+      </div>
     </div>
-  </div>
 
+    <!-- RIGHT: Chart -->
+    <div class="col s12 m8">
+      <div class="card chart-container">
+        <canvas id="chart"></canvas>
+      </div>
+    </div>
+
+  </div>
 </div>
 
-<!-- Materialize JS -->
+<!-- Materialize -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
 <script>
@@ -104,15 +124,14 @@ fetch("./data.csv")
         district: cols[2],
         constituency: cols[3],
         party: cols[4],
+        candidate: cols[5],
         vote: parseFloat(cols[6])
       };
     }).filter(d => d.year);
 
     initFilters();
 
-    // init Material dropdown
-    var elems = document.querySelectorAll('select');
-    M.FormSelect.init(elems);
+    M.FormSelect.init(document.querySelectorAll('select'));
   });
 
 const year = document.getElementById("year");
@@ -145,7 +164,6 @@ function updateConstituency() {
 
   consts.forEach(c => constituency.add(new Option(c, c)));
 
-  // re-init dropdown after update
   M.FormSelect.init(document.querySelectorAll('select'));
 
   drawChart();
@@ -162,6 +180,29 @@ function drawChart() {
 
   let labels = filtered.map(d => d.party);
   let data = filtered.map(d => d.vote);
+
+  // Find winner
+  let maxVote = Math.max(...data);
+
+  // Update candidate list
+  let list = document.getElementById("candidateList");
+  list.innerHTML = "";
+
+  filtered.forEach(d => {
+    let li = document.createElement("li");
+
+    if (d.vote === maxVote) {
+      li.classList.add("winner");
+      li.innerHTML = `<b>${d.party}</b>: ${d.candidate}
+        <span class="badge-winner">🏆 Winner</span><br>
+        Vote: ${d.vote}%`;
+    } else {
+      li.innerHTML = `<b>${d.party}</b>: ${d.candidate}<br>
+        Vote: ${d.vote}%`;
+    }
+
+    list.appendChild(li);
+  });
 
   let colors = {
     "TMC": "#26a69a",
@@ -189,17 +230,13 @@ function drawChart() {
 
       plugins: {
         legend: {
-          labels: {
-            color: "#fff"
-          }
+          position: "right",
+          labels: { color: "#fff" }
         },
 
         datalabels: {
           color: "#fff",
-          font: {
-            weight: "bold",
-            size: 14
-          },
+          font: { weight: "bold", size: 14 },
           formatter: (value, ctx) => {
             let label = ctx.chart.data.labels[ctx.dataIndex];
             return label + "\n" + value + "%";
