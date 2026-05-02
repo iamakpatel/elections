@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Election Dashboard</title>
+  <title>AI Prediction Dashboard</title>
 
   <!-- Materialize -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
@@ -19,15 +19,14 @@
       color: #fff;
     }
 
-    h4 {
-      text-align: center;
+    .row {
       margin-top: 20px;
     }
 
     .card {
       background: #1e1e1e;
-      border-radius: 12px;
       padding: 15px;
+      border-radius: 12px;
       height: 100%;
     }
 
@@ -35,10 +34,63 @@
       height: 60vh;
     }
 
-    /* Make both panels equal height */
     .row.flex {
       display: flex;
       align-items: stretch;
+    }
+
+    /* Candidate Panel */
+    .candidate-panel {
+      height: 60vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .candidate-header {
+      background: #1e1e1e;
+      padding: 10px 5px;
+      border-bottom: 1px solid #333;
+    }
+
+    .candidate-header h6 {
+      margin: -5px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .candidate-body {
+      flex: 1;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: #26a69a #1e1e1e;
+    }
+
+    /* Chrome / Edge / Safari */
+    .candidate-body::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .candidate-body::-webkit-scrollbar-track {
+      background: #1e1e1e;
+      border-radius: 10px;
+    }
+
+    .candidate-body::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #444, #2a2a2a);
+      border-radius: 10px;
+      border: 1px solid #1e1e1e;
+    }
+
+    .candidate-body::-webkit-scrollbar-thumb:hover {
+      background: #26a69a;
+    }
+
+    #candidateList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
 
     #candidateList {
@@ -48,54 +100,24 @@
     }
 
     #candidateList li {
-      padding: 12px;
-      margin: 8px 0;
+      padding: 10px;
+      margin: 6px 0;
       border-radius: 8px;
       background: #2a2a2a;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      cursor: pointer;
-    }
-
-    .color-box {
-      width: 14px;
-      height: 14px;
-      border-radius: 3px;
-      margin-right: 10px;
-    }
-
-    .candidate-left {
-      display: flex;
       align-items: center;
     }
 
     .winner {
-      border-left: 5px solid #4caf50;
+      border-left: 4px solid #26a69a;
       background: #1b5e20;
     }
 
     .badge-winner {
-      background: gold;
-      color: black;
-      padding: 2px 6px;
-      border-radius: 5px;
-      font-size: 12px;
+      font-size: 16px;
     }
 
-    /* Tooltip */
-    .tooltip-box {
-      position: absolute;
-      background: #000;
-      color: #fff;
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-size: 12px;
-      display: none;
-      z-index: 999;
-    }
-
-    /* Fix Material dropdown text */
     .select-dropdown {
       color: #fff !important;
     }
@@ -104,54 +126,230 @@
       color: black !important;
     }
 
+    /* Style for headers */
+    .header-bar {
+      background: linear-gradient(90deg, #1e1e1e, #000000);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      border-radius: 5px;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .brand-logo {
+      font-size: 20px !important;
+      font-weight: 600;
+    }
+    
+    nav ul li a {
+      color: #ccc !important;
+      font-weight: 500;
+    }
+    
+    nav ul li.active a {
+      color: #fff !important;
+      border-bottom: 1px solid #26a69a;
+    }
+    
+    nav ul li a:hover {
+      color: #fff !important;
+    }
+
+
+    /* Modal container */
+    .custom-modal {
+      background: #1e1e1e;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      overflow-x: hidden;
+    }
+
+    /* Title */
+    .modal-title {
+      text-align: center;
+      font-weight: 600;
+      color: #26a69a;
+      margin-bottom: 15px;
+    }
+
+    /* Text */
+    .modal-text {
+      text-align: center;
+      color: #ccc;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .modal-text.subtle {
+      color: #888;
+      font-size: 13px;
+    }
+
+    /* QR section */
+    .qr-container {
+      display: flex;
+      justify-content: center;
+      margin: 15px 0;
+    }
+
+    .qr-container img {
+      width: 180px;
+      max-width: 100%;
+      border-radius: 10px;
+      border: 1px solid #333;
+    }
+
+    /* Scan text */
+    .scan-text {
+      text-align: center;
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    /* Footer */
+    .custom-footer {
+      background: #1e1e1e;
+      text-align: center;
+      border-top: 1px solid #333;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Close button */
+    .close-btn {
+      color: #26a69a !important;
+      display: inline-block !important;
+      width: auto !important;
+      padding: 6px 18px;
+      border-radius: 6px;
+    }
+
+    .close-btn:hover {
+      color: #4db6ac !important;
+    }
+
+    /* Remove horizontal scroll */
+    .modal, .modal-content {
+      overflow-x: hidden;
+    }
+
+    /* Candidate Tooltip */
+    .candidate-tooltip {
+      position: absolute;
+      background: #000;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      display: none;
+      z-index: 9999;
+      pointer-events: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      border: 1px solid #333;
+      line-height: 1.5;
+    }
+
+
+    /* Seat Panel */
+    .seat-panel {
+      height: 60vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .seat-body {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 10px;
+    }
+
+    /* Seat square blocks */
+    .seat-box {
+      height: 80px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    }
+
+    .seat-box span {
+      font-size: 12px;
+      color: #ddd;
+    }
+
+    .seat-count {
+      font-size: 22px;
+    }
   </style>
 </head>
 
 <body>
-
+  <nav class="header-bar">
+    <div class="nav-wrapper container">
+      <!-- Logo / Title -->
+      <a href="index.html" class="brand-logo">West Bengal Assembly Elections 2026</a>
+      <!-- Desktop Menu -->
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li class="active"><a href="index.html">AI-Prediction</a></li>
+        <li><a href="past-wb.html">Past Elections</a></li>
+      </ul>
+    </div>
+  </nav>
 <div class="container">
-  <h4>Election Results</h4>
-
   <!-- Filters -->
   <div class="row">
-    <div class="input-field col s12 m4">
-      <select id="year"></select>
-      <label>Year</label>
-    </div>
-
-    <div class="input-field col s12 m4">
-      <select id="district"></select>
+    <div class="input-field col s12 m6">
+      <select id="district">
+        <option value="" selected>All Districts</option>
+      </select>
       <label>District</label>
     </div>
 
-    <div class="input-field col s12 m4">
-      <select id="constituency"></select>
+    <div class="input-field col s12 m6">
+      <select id="constituency" disabled>
+        <option value="" selected>All Constituencies</option>
+      </select>
       <label>Constituency</label>
     </div>
   </div>
 
   <!-- Layout -->
   <div class="row flex">
-
-    <!-- LEFT -->
-    <div class="col s12 m4">
-      <div class="card">
-        <h6 style="text-align:center;">Candidates</h6>
-        <ul id="candidateList"></ul>
+    <!-- LEFT: Candidates -->
+    <div class="col s12 m3">
+      <div class="card candidate-panel">
+        <div class="candidate-header">
+          <h6>Candidates</h6>
+        </div>
+        <div class="candidate-body">
+          <ul id="candidateList"></ul>
+        </div>
       </div>
     </div>
 
-    <!-- RIGHT -->
-    <div class="col s12 m8">
+    <!-- MIDDLE: Chart -->
+    <div class="col s12 m7">
       <div class="card chart-container">
         <canvas id="chart"></canvas>
       </div>
     </div>
 
-  </div>
-</div>
+    <!-- RIGHT: Seat Count -->
+    <div class="col s12 m2">
+      <div class="card seat-panel">
+        <div class="candidate-header">
+          <h6>Seats Prediction</h6>
+        </div>
+        <div class="seat-body" id="seatPanel"></div>
+      </div>
+    </div>
 
-<div id="tooltip" class="tooltip-box"></div>
+  </div>
+
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
@@ -159,118 +357,236 @@
 Chart.register(ChartDataLabels);
 
 let rawData = [];
-
-const colors = {
-  "TMC": "#26a69a",
-  "BJP": "#ff9800",
-  "CPI(M)": "#ef5350",
-  "INC": "#42a5f5"
-};
-
-fetch("./data.csv")
-  .then(res => res.text())
-  .then(csv => {
-    rawData = csv.split("\n").slice(1).map(row => {
-      let cols = row.split(",");
-      return {
-        year: cols[0],
-        district: cols[2],
-        constituency: cols[3],
-        party: cols[4],
-        candidate: cols[5],
-        vote: parseFloat(cols[6])
-      };
-    }).filter(d => d.year);
-
-    initFilters();
-    M.FormSelect.init(document.querySelectorAll('select'));
-  });
-
-const year = document.getElementById("year");
-const district = document.getElementById("district");
-const constituency = document.getElementById("constituency");
-
-function initFilters() {
-  [...new Set(rawData.map(d => d.year))].forEach(y => year.add(new Option(y,y)));
-  [...new Set(rawData.map(d => d.district))].forEach(d => district.add(new Option(d,d)));
-  updateConstituency();
-}
-
-year.onchange = updateConstituency;
-district.onchange = updateConstituency;
-constituency.onchange = drawChart;
-
-function updateConstituency() {
-  constituency.innerHTML = "";
-  let filtered = rawData.filter(d => d.year === year.value && d.district === district.value);
-  [...new Set(filtered.map(d => d.constituency))].forEach(c => constituency.add(new Option(c,c)));
-  M.FormSelect.init(document.querySelectorAll('select'));
-  drawChart();
-}
-
 let chart;
 
+const colors = {
+  "TMC": "#006400",
+  "BJP": "#FF8400",
+  "CPI(M)": "#FF0000",
+  "INC": "#009DFF",
+  "OTHERS": "#888888"
+};
+
+// Load CSV
+fetch("ai-prediction.csv")
+  .then(res => res.text())
+  .then(csv => {
+    rawData = csv.split("\n").slice(1).map(r => {
+      let c = r.replace("\r", "").split(",");
+      return {
+        district: c[1],
+        constituency: c[2],
+        party: c[3],
+        candidate: c[4],
+        value: parseFloat(c[5])
+      };
+    });
+
+    initDistrict();
+    M.FormSelect.init(document.querySelectorAll('select'));
+    drawChart();
+  });
+
+const districtEl = document.getElementById("district");
+const constituencyEl = document.getElementById("constituency");
+
+// Init district
+function initDistrict() {
+  let districts = [...new Set(rawData.map(d => d.district))].sort();
+  districts.forEach(d => districtEl.add(new Option(d, d)));
+}
+
+// District change
+districtEl.onchange = () => {
+  constituencyEl.innerHTML = '<option value="" selected>All Constituencies</option>';
+
+  if (!districtEl.value) {
+    constituencyEl.disabled = true;
+  } else {
+    constituencyEl.disabled = false;
+
+    let filtered = rawData.filter(d => d.district === districtEl.value);
+    let cons = [...new Set(filtered.map(d => d.constituency))].sort();
+
+    cons.forEach(c => constituencyEl.add(new Option(c, c)));
+  }
+
+  M.FormSelect.init(document.querySelectorAll('select'));
+  drawChart();
+};
+
+constituencyEl.onchange = drawChart;
+
+// Core logic
 function drawChart() {
-  let filtered = rawData.filter(d =>
-    d.year === year.value &&
-    d.district === district.value &&
-    d.constituency === constituency.value
-  );
+  let filtered;
 
-  let labels = filtered.map(d => d.party);
-  let data = filtered.map(d => d.vote);
+  if (!districtEl.value) {
+    filtered = rawData;
+  } else if (!constituencyEl.value) {
+    filtered = rawData.filter(d => d.district === districtEl.value);
+  } else {
+    filtered = rawData.filter(d =>
+      d.district === districtEl.value &&
+      d.constituency === constituencyEl.value
+    );
+  }
 
-  let maxVote = Math.max(...data);
+  // Count constituencies
+  let constituencyCount = new Set(filtered.map(d => d.constituency)).size || 1;
 
-  // Candidate list
+  // Aggregate
+  let result = {};
+  let candidateMap = {};
+
+  filtered.forEach(d => {
+    result[d.party] = (result[d.party] || 0) + d.value;
+
+    if (!candidateMap[d.party]) candidateMap[d.party] = [];
+    candidateMap[d.party].push(d.candidate);
+  });
+
+  // Average
+  Object.keys(result).forEach(p => {
+    result[p] = result[p] / constituencyCount;
+  });
+
+  let labels = Object.keys(result);
+  let data = Object.values(result);
+
+  // Candidate panel
   let list = document.getElementById("candidateList");
   list.innerHTML = "";
 
-  filtered.forEach(d => {
-    let li = document.createElement("li");
+  if (districtEl.value && constituencyEl.value) {
+    let maxVote = Math.max(...filtered.map(d => d.value));
 
-    let left = document.createElement("div");
-    left.className = "candidate-left";
+    filtered.forEach(d => {
+      let li = document.createElement("li");
+      li.innerText = d.candidate + " (" + d.party + ")";
 
-    let colorBox = document.createElement("div");
-    colorBox.className = "color-box";
-    colorBox.style.background = colors[d.party] || "#888";
+      if (d.value === maxVote) {
+        li.classList.add("winner");
 
-    let name = document.createElement("span");
-    name.innerText = d.candidate;
+        let trophy = document.createElement("span");
+        trophy.className = "badge-winner";
+        trophy.innerText = "🏆";
+        li.appendChild(trophy);
+      }
 
-    left.appendChild(colorBox);
-    left.appendChild(name);
+       // 🔥 TOOLTIP
+        li.onmousemove = (e) => {
+          let tooltip = document.getElementById("candidateTooltip");
+          tooltip.style.display = "block";
+          tooltip.style.left = (e.pageX + 10) + "px";
+          tooltip.style.top = (e.pageY + 10) + "px";
 
-    li.appendChild(left);
+          tooltip.innerHTML = `
+            District: ${d.district}<br>
+            Constituency: ${d.constituency}<br>
+            Winning Prediction: ${d.value}%
+          `;
+        };
 
-    if (d.vote === maxVote) {
+        li.onmouseleave = () => {
+          document.getElementById("candidateTooltip").style.display = "none";
+        };
+
+      list.appendChild(li);
+    });
+
+  } else {
+    let group = {};
+  
+    // group by constituency
+    filtered.forEach(d => {
+      if (!group[d.constituency]) group[d.constituency] = [];
+      group[d.constituency].push(d);
+    });
+  
+    // ✅ get ONE winner per constituency
+    let winners = Object.values(group).map(arr =>
+      arr.reduce((a, b) => a.value > b.value ? a : b)
+    );
+  
+    // ✅ sort alphabetically
+    winners.sort((a, b) => a.candidate.localeCompare(b.candidate));
+  
+    // ✅ render ONCE
+    winners.forEach(winner => {
+      let li = document.createElement("li");
       li.classList.add("winner");
-      let badge = document.createElement("span");
-      badge.className = "badge-winner";
-      badge.innerText = "🏆";
-      li.appendChild(badge);
-    }
+      li.innerText = winner.candidate + " (" + winner.party + ")";
+  
+      let trophy = document.createElement("span");
+      trophy.className = "badge-winner";
+      trophy.innerText = "🏆";
+  
+      li.appendChild(trophy);
+      // 🔥 TOOLTIP
+      li.onmousemove = (e) => {
+        let tooltip = document.getElementById("candidateTooltip");
+        tooltip.style.display = "block";
+        tooltip.style.left = (e.pageX + 10) + "px";
+        tooltip.style.top = (e.pageY + 10) + "px";
 
-    // Tooltip
-    li.onmousemove = (e) => {
-      let tooltip = document.getElementById("tooltip");
-      tooltip.style.display = "block";
-      tooltip.style.left = e.pageX + 10 + "px";
-      tooltip.style.top = e.pageY + 10 + "px";
-      tooltip.innerHTML = `
-        ${d.candidate}<br>
-        ${d.party}<br>
-        ${d.vote}%
-      `;
-    };
+        tooltip.innerHTML = `
+          District: ${winner.district}<br>
+          Constituency: ${winner.constituency}<br>
+          Winning Prediction: ${winner.value}%
+        `;
+      };
 
-    li.onmouseleave = () => {
-      document.getElementById("tooltip").style.display = "none";
-    };
+      li.onmouseleave = () => {
+        document.getElementById("candidateTooltip").style.display = "none";
+      };
+      list.appendChild(li);
+    });
+  }
 
-    list.appendChild(li);
-  });
+
+  // 🆕 ===== SEAT COUNT LOGIC =====
+let seatResult = {
+  "TMC": 0,
+  "BJP": 0,
+  "INC": 0,
+  "OTHERS": 0
+};
+
+// group by constituency
+let group = {};
+filtered.forEach(d => {
+  if (!group[d.constituency]) group[d.constituency] = [];
+  group[d.constituency].push(d);
+});
+
+// winner per constituency
+Object.values(group).forEach(arr => {
+  let winner = arr.reduce((a, b) => a.value > b.value ? a : b);
+
+  if (seatResult[winner.party] !== undefined) {
+    seatResult[winner.party]++;
+  } else {
+    seatResult["OTHERS"]++;
+  }
+});
+
+// 🆕 RENDER
+let seatPanel = document.getElementById("seatPanel");
+seatPanel.innerHTML = "";
+
+Object.keys(seatResult).forEach(party => {
+  let box = document.createElement("div");
+  box.className = "seat-box";
+  box.style.background = colors[party];
+
+  box.innerHTML = `
+    <span>${party}</span>
+    <div class="seat-count">${seatResult[party]}</div>
+  `;
+
+  seatPanel.appendChild(box);
+});
 
   if (chart) chart.destroy();
 
@@ -287,18 +603,72 @@ function drawChart() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { display: false }, // ✅ removed
+        legend: { display: false },
         datalabels: {
           color: "#fff",
-          font: { weight: "bold", size: 14 },
+          font: { weight: "bold", size: 10 },
           formatter: (value, ctx) =>
-            ctx.chart.data.labels[ctx.dataIndex] + "\n" + value + "%"
+            ctx.chart.data.labels[ctx.dataIndex] + "\n" + value.toFixed(1) + "%"
+        },
+
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              let party = context.label;
+              let value = context.raw.toFixed(1);
+              let candidates = candidateMap[party].join(", ");
+
+              return [
+                "Winning Prediction: " + value + "%"
+              ];
+            }
+          }
         }
       }
     }
   });
 }
-</script>
 
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.modal');
+  M.Modal.init(elems);
+});
+
+</script>
+    <!-- FOOTER -->
+    <footer>
+      <div class="nav-wrapper" style="text-align:center;">
+        
+        <a href="#supportModal" class="modal-trigger" style="font-size:14px; color:#26a69a; font-weight:500;">
+          Support Us ❤️
+        </a>
+
+      </div>
+    </footer>
+
+    <!-- MODAL -->
+    <div id="supportModal" class="modal custom-modal">
+      <div class="modal-content">
+        <h5 class="modal-title">Support Independent Analysis</h5>
+        <p class="modal-text">
+          This election dashboard is built to provide clean, data-driven insights without bias.
+          If you find value in this work, consider contributing.
+        </p>
+        <p class="modal-text subtle">
+          Your support helps us maintain data accuracy, improve visualizations, and keep this platform running.
+        </p>
+        <!-- QR -->
+        <div class="qr-container">
+          <img src="images/qr.png" alt="Donate QR">
+        </div>
+        <p class="scan-text">
+          Scan to contribute via UPI
+        </p>
+      </div>
+      <div class="modal-footer custom-footer">
+        <a href="#!" class="modal-close btn-flat close-btn">Close</a>
+      </div>
+    </div>
+    <div id="candidateTooltip" class="candidate-tooltip"></div>
 </body>
 </html>

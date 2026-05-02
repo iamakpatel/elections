@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Election Dashboard</title>
+
+  <!-- Materialize -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- DataLabels -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+  <style>
+    body {
+      background: #121212;
+      color: #fff;
+    }
+
+    .row {
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #1e1e1e;
+      border-radius: 12px;
+      padding: 15px;
+      height: 100%;
+    }
+
+    .chart-container {
+      height: 60vh;
+    }
+
+    /* Make both panels equal height */
+    .row.flex {
+      display: flex;
+      align-items: stretch;
+    }
+
+    #candidateList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    #candidateList li {
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background: #2a2a2a;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .color-box {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      margin-right: 10px;
+    }
+
+    .candidate-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .winner {
+      border-left: 5px solid #26a69a;
+      background: #1b5e20;
+    }
+
+    .badge-winner {
+      background: grey; 
+      color: black;
+      padding: 2px 6px;
+      border-radius: 5px;
+      font-size: 20px;
+    }
+
+    /* Tooltip */
+    .tooltip-box {
+      position: absolute;
+      background: #000;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      display: none;
+      z-index: 999;
+    }
+
+    /* Fix Material dropdown text */
+    .select-dropdown {
+      color: #fff !important;
+    }
+
+    .dropdown-content li>a {
+      color: black !important;
+    }
+    /* Style for headers */
+    .header-bar {
+      background: linear-gradient(90deg, #1e1e1e, #000000);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      border-radius: 5px;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .brand-logo {
+      font-size: 20px !important;
+      font-weight: 600;
+    }
+    
+    nav ul li a {
+      color: #ccc !important;
+      font-weight: 500;
+    }
+    
+    nav ul li.active a {
+      color: #fff !important;
+      border-bottom: 1px solid #26a69a;
+    }
+    
+    nav ul li a:hover {
+      color: #fff !important;
+    }
+
+    /* Modal container */
+    .custom-modal {
+      background: #1e1e1e;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      overflow-x: hidden;
+    }
+
+    /* Title */
+    .modal-title {
+      text-align: center;
+      font-weight: 600;
+      color: #26a69a;
+      margin-bottom: 15px;
+    }
+
+    /* Text */
+    .modal-text {
+      text-align: center;
+      color: #ccc;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .modal-text.subtle {
+      color: #888;
+      font-size: 13px;
+    }
+
+    /* QR section */
+    .qr-container {
+      display: flex;
+      justify-content: center;
+      margin: 15px 0;
+    }
+
+    .qr-container img {
+      width: 180px;
+      max-width: 100%;
+      border-radius: 10px;
+      border: 1px solid #333;
+    }
+
+    /* Scan text */
+    .scan-text {
+      text-align: center;
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    /* Footer */
+    .custom-footer {
+      background: #1e1e1e;
+      text-align: center;
+      border-top: 1px solid #333;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Close button */
+    .close-btn {
+      color: #26a69a !important;
+      display: inline-block !important;
+      width: auto !important;
+      padding: 6px 18px;
+      border-radius: 6px;
+    }
+
+    .close-btn:hover {
+      color: #4db6ac !important;
+    }
+
+    /* Remove horizontal scroll */
+    .modal, .modal-content {
+      overflow-x: hidden;
+    }
+  </style>
+</head>
+
+
+<body>
+
+  <nav class="header-bar">
+    <div class="nav-wrapper container">
+      <!-- Logo / Title -->
+      <a href="index.html" class="brand-logo">West Bengal Assembly Elections 2026</a>
+      <!-- Desktop Menu -->
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="index.html">AI-Prediction</a></li>
+        <li class="active"><a href="past-wb.html">Past Elections</a></li>
+      </ul>
+    </div>
+  </nav>
+
+<div class="container">
+
+  <!-- Filters -->
+  <div class="row">
+    <div class="input-field col s12 m4">
+      <select id="year"></select>
+      <label>Year</label>
+    </div>
+
+    <div class="input-field col s12 m4">
+      <select id="district"></select>
+      <label>District</label>
+    </div>
+
+    <div class="input-field col s12 m4">
+      <select id="constituency"></select>
+      <label>Constituency</label>
+    </div>
+  </div>
+
+  <!-- Layout -->
+  <div class="row flex">
+
+    <!-- LEFT -->
+    <div class="col s12 m4">
+      <div class="card chart-container">
+        <h6 style="text-align:center;">Candidates</h6>
+        <ul id="candidateList"></ul>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="col s12 m8">
+      <div class="card chart-container">
+        <canvas id="chart"></canvas>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="tooltip" class="tooltip-box"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<script>
+
+document.querySelectorAll('#nav-mobile li a').forEach(link => {
+  link.addEventListener('click', function () {
+    
+    // remove active from all
+    document.querySelectorAll('#nav-mobile li').forEach(li => {
+      li.classList.remove('active');
+    });
+
+    // add active to clicked
+    this.parentElement.classList.add('active');
+  });
+});
+
+Chart.register(ChartDataLabels);
+
+let rawData = [];
+
+const colors = {
+  "TMC": "#006400",
+  "BJP": "#FF8400",
+  "CPI(M)": "#FF0000",
+  "INC": "#009DFF"
+};
+
+fetch("./past-wb.csv")
+  .then(res => res.text())
+  .then(csv => {
+    rawData = csv.split("\n").slice(1).map(row => {
+      let cols = row.split(",");
+      return {
+        year: cols[0],
+        state: cols[1],
+        district: cols[2],
+        constituency: cols[3],
+        party: cols[4],
+        candidate: cols[5],
+        vote: parseFloat(cols[6])
+      };
+    }).filter(d => d.year);
+
+    initFilters();
+    M.FormSelect.init(document.querySelectorAll('select'));
+  });
+
+const year = document.getElementById("year");
+const district = document.getElementById("district");
+const constituency = document.getElementById("constituency");
+const state = document.getElementById("state");
+
+function initFilters() {
+  [...new Set(rawData.map(d => d.year))]
+  .sort((a, b) => b - a)
+  .forEach(y => year.add(new Option(y, y)));
+  [...new Set(rawData.map(d => d.district))].sort().forEach(d => district.add(new Option(d,d)));
+  updateConstituency();
+}
+
+year.onchange = updateConstituency;
+district.onchange = updateConstituency;
+constituency.onchange = drawChart;
+
+function updateConstituency() {
+  constituency.innerHTML = "";
+  let filtered = rawData.filter(d => d.year === year.value && d.district === district.value);
+  [...new Set(filtered.map(d => d.constituency))].sort().forEach(c => constituency.add(new Option(c,c)));
+  M.FormSelect.init(document.querySelectorAll('select'));
+  drawChart();
+}
+
+let chart;
+
+function drawChart() {
+  let filtered = rawData.filter(d =>
+    d.year === year.value &&
+    d.district === district.value &&
+    d.constituency === constituency.value
+  );
+
+  let labels = filtered.map(d => d.party);
+  let data = filtered.map(d => d.vote);
+
+  let maxVote = Math.max(...data);
+
+  // Candidate list
+  let list = document.getElementById("candidateList");
+  list.innerHTML = "";
+
+  filtered.forEach(d => {
+    let li = document.createElement("li");
+
+    let left = document.createElement("div");
+    left.className = "candidate-left";
+
+    let colorBox = document.createElement("div");
+    colorBox.className = "color-box";
+    colorBox.style.background = colors[d.party] || "#888";
+
+    let name = document.createElement("span");
+    name.innerText = d.candidate;
+
+    left.appendChild(colorBox);
+    left.appendChild(name);
+
+    li.appendChild(left);
+
+    if (d.vote === maxVote) {
+      li.classList.add("winner");
+      let badge = document.createElement("span");
+      badge.className = "badge-winner";
+      badge.innerText = "🏆";
+      li.appendChild(badge);
+    }
+
+    // Tooltip
+    li.onmousemove = (e) => {
+      let tooltip = document.getElementById("tooltip");
+      tooltip.style.display = "block";
+      tooltip.style.left = e.pageX + 10 + "px";
+      tooltip.style.top = e.pageY + 10 + "px";
+      tooltip.innerHTML = `
+        ${d.candidate}<br>
+        ${d.party}<br>
+        ${d.vote}%
+      `;
+    };
+
+    li.onmouseleave = () => {
+      document.getElementById("tooltip").style.display = "none";
+    };
+
+    list.appendChild(li);
+  });
+
+  if (chart) chart.destroy();
+
+  chart = new Chart(document.getElementById("chart"), {
+    type: "pie",
+    data: {
+      labels: labels,
+      datasets: [{
+        data: data,
+        backgroundColor: labels.map(l => colors[l] || "#888")
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }, // ✅ removed
+        datalabels: {
+          color: "#fff",
+          font: { weight: "bold", size: 10 },
+          formatter: (value, ctx) =>
+            ctx.chart.data.labels[ctx.dataIndex] + "\n" + value + "%"
+        }
+      }
+    }
+  });
+}
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.modal');
+  M.Modal.init(elems);
+});
+</script>
+<!-- FOOTER -->
+<footer>
+  <div class="nav-wrapper" style="text-align:center;">
+    
+    <a href="#supportModal" class="modal-trigger" style="font-size:14px; color:#26a69a; font-weight:500;">
+      Support Us ❤️
+    </a>
+
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div id="supportModal" class="modal custom-modal">
+  <div class="modal-content">
+    <h5 class="modal-title">Support Independent Analysis</h5>
+    <p class="modal-text">
+      This election dashboard is built to provide clean, data-driven insights without bias.
+      If you find value in this work, consider contributing.
+    </p>
+    <p class="modal-text subtle">
+      Your support helps us maintain data accuracy, improve visualizations, and keep this platform running.
+    </p>
+    <!-- QR -->
+    <div class="qr-container">
+      <img src="images/qr.png" alt="Donate QR">
+    </div>
+    <p class="scan-text">
+      Scan to contribute via UPI
+    </p>
+  </div>
+  <div class="modal-footer custom-footer">
+    <a href="#!" class="modal-close btn-flat close-btn">Close</a>
+  </div>
+</div>
+</body>
+</html>
