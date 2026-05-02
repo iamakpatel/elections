@@ -1,104 +1,91 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>WB Election 2026 Dashboard</title>
-
-  <style>
-    body {
-      font-family: Arial;
-      margin: 40px;
-      background-color: #f5f5f5;
-    }
-
-    h1 {
-      color: #2c3e50;
-    }
-
-    select {
-      padding: 10px;
-      margin: 10px;
-      font-size: 16px;
-    }
-
-    .chart-container {
-      margin-top: 30px;
-    }
-  </style>
+  <title>Election Pie Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
 
-<h1>West Bengal Election 2026</h1>
+<h2>Election Results</h2>
 
-<!-- Dropdowns -->
-<label>District:</label>
-<select id="district" onchange="updateConstituencies()">
-  <option value="">Select District</option>
-  <option value="kolkata">Kolkata</option>
-  <option value="howrah">Howrah</option>
-</select>
+<select id="year"></select>
+<select id="district"></select>
+<select id="constituency"></select>
 
-<label>Constituency:</label>
-<select id="constituency" onchange="loadChart()">
-  <option value="">Select Constituency</option>
-</select>
-
-<!-- Chart -->
-<div class="chart-container">
-  <div id="chart"></div>
-</div>
-
-<script src="https://public.flourish.studio/resources/embed.js"></script>
+<canvas id="chart" width="400" height="400"></canvas>
 
 <script>
-// Mapping: District → Constituency → Flourish ID
-const data = {
-  kolkata: {
-    bhabanipur: "visualisation/28772873",
-    entally: "visualisation/28772873"
-  },
-  howrah: {
-    shibpur: "visualisation/28772873",
-    uluberia: "visualisation/28772873"
-  }
-};
+let rawData = [];
 
-// Populate constituency dropdown
-function updateConstituencies() {
-  const district = document.getElementById("district").value;
-  const constituencyDropdown = document.getElementById("constituency");
-
-  constituencyDropdown.innerHTML = '<option value="">Select Constituency</option>';
-
-  if (district && data[district]) {
-    Object.keys(data[district]).forEach(c => {
-      const option = document.createElement("option");
-      option.value = c;
-      option.text = c.charAt(0).toUpperCase() + c.slice(1);
-      constituencyDropdown.appendChild(option);
+fetch("data.csv")
+  .then(res => res.text())
+  .then(csv => {
+    rawData = csv.split("\n").slice(1).map(row => {
+      let cols = row.split(",");
+      return {
+        year: cols[0],
+        district: cols[2],
+        constituency: cols[3],
+        party: cols[4],
+        vote: parseFloat(cols[6])
+      };
     });
-  }
 
-  document.getElementById("chart").innerHTML = "";
+    initFilters();
+  });
+
+function initFilters() {
+  let years = [...new Set(rawData.map(d => d.year))];
+  let districts = [...new Set(rawData.map(d => d.district))];
+
+  years.forEach(y => year.add(new Option(y, y)));
+  districts.forEach(d => district.add(new Option(d, d)));
+
+  updateConstituency();
 }
 
-// Load Flourish chart
-function loadChart() {
-  const district = document.getElementById("district").value;
-  const constituency = document.getElementById("constituency").value;
+year.onchange = updateConstituency;
+district.onchange = updateConstituency;
+constituency.onchange = drawChart;
 
-  if (district && constituency) {
-    const chartId = data[district][constituency];
+function updateConstituency() {
+  constituency.innerHTML = "";
 
-    document.getElementById("chart").innerHTML = `
-      <div class="flourish-embed" data-src="${chartId}"></div>
-    `;
+  let filtered = rawData.filter(d =>
+    d.year === year.value &&
+    d.district === district.value
+  );
 
-    // Re-run Flourish embed script
-    if (window.Flourish) {
-      window.Flourish.embed();
+  let consts = [...new Set(filtered.map(d => d.constituency))];
+
+  consts.forEach(c => constituency.add(new Option(c, c)));
+
+  drawChart();
+}
+
+let chart;
+
+function drawChart() {
+  let filtered = rawData.filter(d =>
+    d.year === year.value &&
+    d.district === district.value &&
+    d.constituency === constituency.value
+  );
+
+  let labels = filtered.map(d => d.party);
+  let data = filtered.map(d => d.vote);
+
+  if (chart) chart.destroy();
+
+  chart = new Chart(document.getElementById("chart"), {
+    type: "pie",
+    data: {
+      labels: labels,
+      datasets: [{
+        data: data
+      }]
     }
-  }
+  });
 }
 </script>
 
