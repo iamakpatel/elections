@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Election Dashboard</title>
 
-  <!-- Materialize CSS -->
+  <!-- Materialize -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
 
   <!-- Chart.js -->
@@ -28,22 +28,46 @@
       background: #1e1e1e;
       border-radius: 12px;
       padding: 15px;
+      height: 100%;
     }
 
     .chart-container {
       height: 60vh;
     }
 
+    /* Make both panels equal height */
+    .row.flex {
+      display: flex;
+      align-items: stretch;
+    }
+
     #candidateList {
       list-style: none;
       padding: 0;
+      margin: 0;
     }
 
     #candidateList li {
-      padding: 10px;
+      padding: 12px;
       margin: 8px 0;
       border-radius: 8px;
       background: #2a2a2a;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .color-box {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      margin-right: 10px;
+    }
+
+    .candidate-left {
+      display: flex;
+      align-items: center;
     }
 
     .winner {
@@ -56,9 +80,30 @@
       color: black;
       padding: 2px 6px;
       border-radius: 5px;
-      margin-left: 6px;
       font-size: 12px;
     }
+
+    /* Tooltip */
+    .tooltip-box {
+      position: absolute;
+      background: #000;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      display: none;
+      z-index: 999;
+    }
+
+    /* Fix Material dropdown text */
+    .select-dropdown {
+      color: #fff !important;
+    }
+
+    .dropdown-content li>a {
+      color: black !important;
+    }
+
   </style>
 </head>
 
@@ -86,9 +131,9 @@
   </div>
 
   <!-- Layout -->
-  <div class="row">
+  <div class="row flex">
 
-    <!-- LEFT: Candidates -->
+    <!-- LEFT -->
     <div class="col s12 m4">
       <div class="card">
         <h6 style="text-align:center;">Candidates</h6>
@@ -96,7 +141,7 @@
       </div>
     </div>
 
-    <!-- RIGHT: Chart -->
+    <!-- RIGHT -->
     <div class="col s12 m8">
       <div class="card chart-container">
         <canvas id="chart"></canvas>
@@ -106,13 +151,21 @@
   </div>
 </div>
 
-<!-- Materialize -->
+<div id="tooltip" class="tooltip-box"></div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
 <script>
 Chart.register(ChartDataLabels);
 
 let rawData = [];
+
+const colors = {
+  "TMC": "#26a69a",
+  "BJP": "#ff9800",
+  "CPI(M)": "#ef5350",
+  "INC": "#42a5f5"
+};
 
 fetch("./data.csv")
   .then(res => res.text())
@@ -130,7 +183,6 @@ fetch("./data.csv")
     }).filter(d => d.year);
 
     initFilters();
-
     M.FormSelect.init(document.querySelectorAll('select'));
   });
 
@@ -139,12 +191,8 @@ const district = document.getElementById("district");
 const constituency = document.getElementById("constituency");
 
 function initFilters() {
-  let years = [...new Set(rawData.map(d => d.year))];
-  let districts = [...new Set(rawData.map(d => d.district))];
-
-  years.forEach(y => year.add(new Option(y, y)));
-  districts.forEach(d => district.add(new Option(d, d)));
-
+  [...new Set(rawData.map(d => d.year))].forEach(y => year.add(new Option(y,y)));
+  [...new Set(rawData.map(d => d.district))].forEach(d => district.add(new Option(d,d)));
   updateConstituency();
 }
 
@@ -154,18 +202,9 @@ constituency.onchange = drawChart;
 
 function updateConstituency() {
   constituency.innerHTML = "";
-
-  let filtered = rawData.filter(d =>
-    d.year === year.value &&
-    d.district === district.value
-  );
-
-  let consts = [...new Set(filtered.map(d => d.constituency))];
-
-  consts.forEach(c => constituency.add(new Option(c, c)));
-
+  let filtered = rawData.filter(d => d.year === year.value && d.district === district.value);
+  [...new Set(filtered.map(d => d.constituency))].forEach(c => constituency.add(new Option(c,c)));
   M.FormSelect.init(document.querySelectorAll('select'));
-
   drawChart();
 }
 
@@ -181,37 +220,57 @@ function drawChart() {
   let labels = filtered.map(d => d.party);
   let data = filtered.map(d => d.vote);
 
-  // Find winner
   let maxVote = Math.max(...data);
 
-  // Update candidate list
+  // Candidate list
   let list = document.getElementById("candidateList");
   list.innerHTML = "";
 
   filtered.forEach(d => {
     let li = document.createElement("li");
 
+    let left = document.createElement("div");
+    left.className = "candidate-left";
+
+    let colorBox = document.createElement("div");
+    colorBox.className = "color-box";
+    colorBox.style.background = colors[d.party] || "#888";
+
+    let name = document.createElement("span");
+    name.innerText = d.candidate;
+
+    left.appendChild(colorBox);
+    left.appendChild(name);
+
+    li.appendChild(left);
+
     if (d.vote === maxVote) {
       li.classList.add("winner");
-      li.innerHTML = `<b>${d.party}</b>: ${d.candidate}
-        <span class="badge-winner">🏆 Winner</span><br>
-        Vote: ${d.vote}%`;
-    } else {
-      li.innerHTML = `<b>${d.party}</b>: ${d.candidate}<br>
-        Vote: ${d.vote}%`;
+      let badge = document.createElement("span");
+      badge.className = "badge-winner";
+      badge.innerText = "🏆";
+      li.appendChild(badge);
     }
+
+    // Tooltip
+    li.onmousemove = (e) => {
+      let tooltip = document.getElementById("tooltip");
+      tooltip.style.display = "block";
+      tooltip.style.left = e.pageX + 10 + "px";
+      tooltip.style.top = e.pageY + 10 + "px";
+      tooltip.innerHTML = `
+        ${d.candidate}<br>
+        ${d.party}<br>
+        ${d.vote}%
+      `;
+    };
+
+    li.onmouseleave = () => {
+      document.getElementById("tooltip").style.display = "none";
+    };
 
     list.appendChild(li);
   });
-
-  let colors = {
-    "TMC": "#26a69a",
-    "BJP": "#ff9800",
-    "CPI(M)": "#ef5350",
-    "INC": "#42a5f5"
-  };
-
-  let bg = labels.map(l => colors[l] || "#888");
 
   if (chart) chart.destroy();
 
@@ -221,26 +280,19 @@ function drawChart() {
       labels: labels,
       datasets: [{
         data: data,
-        backgroundColor: bg
+        backgroundColor: labels.map(l => colors[l] || "#888")
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-
       plugins: {
-        legend: {
-          position: "right",
-          labels: { color: "#fff" }
-        },
-
+        legend: { display: false }, // ✅ removed
         datalabels: {
           color: "#fff",
           font: { weight: "bold", size: 14 },
-          formatter: (value, ctx) => {
-            let label = ctx.chart.data.labels[ctx.dataIndex];
-            return label + "\n" + value + "%";
-          }
+          formatter: (value, ctx) =>
+            ctx.chart.data.labels[ctx.dataIndex] + "\n" + value + "%"
         }
       }
     }
