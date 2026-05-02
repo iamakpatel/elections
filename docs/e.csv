@@ -1,0 +1,61 @@
+Year,State,District,Constituency,Party,Candidate Name,Vote Share
+2001,West Bengal,Kolkata,Kolkata North,CPI(M),Anil Banerjee,48.2
+2001,West Bengal,Kolkata,Kolkata North,INC,Rajesh Sharma,32.5
+2001,West Bengal,Kolkata,Kolkata North,TMC,Suman Dey,15.3
+2001,West Bengal,Howrah,Howrah Central,CPI(M),Pradip Ghosh,51.1
+2001,West Bengal,Howrah,Howrah Central,INC,Amit Mitra,28.4
+2001,West Bengal,Howrah,Howrah Central,TMC,Rakesh Shaw,17.9
+2001,West Bengal,Hooghly,Chandannagar,CPI(M),Biman Roy,49.5
+2001,West Bengal,Hooghly,Chandannagar,INC,Sanjay Paul,30.2
+2001,West Bengal,Hooghly,Chandannagar,TMC,Arup Das,16.8
+2001,West Bengal,North 24 Parganas,Barasat,CPI(M),Gautam Deb,52.3
+2001,West Bengal,North 24 Parganas,Barasat,INC,Manas Roy,29.7
+2001,West Bengal,North 24 Parganas,Barasat,TMC,Kalyan Sen,14.6
+2006,West Bengal,Kolkata,Kolkata North,CPI(M),Anil Banerjee,50.4
+2006,West Bengal,Kolkata,Kolkata North,TMC,Suman Dey,28.2
+2006,West Bengal,Kolkata,Kolkata North,INC,Rajesh Sharma,18.5
+2006,West Bengal,Howrah,Howrah Central,CPI(M),Pradip Ghosh,53.7
+2006,West Bengal,Howrah,Howrah Central,TMC,Rakesh Shaw,25.1
+2006,West Bengal,Howrah,Howrah Central,INC,Amit Mitra,17.2
+2006,West Bengal,Hooghly,Chandannagar,CPI(M),Biman Roy,51.8
+2006,West Bengal,Hooghly,Chandannagar,TMC,Arup Das,26.4
+2006,West Bengal,Hooghly,Chandannagar,INC,Sanjay Paul,19.3
+2006,West Bengal,North 24 Parganas,Barasat,CPI(M),Gautam Deb,55.1
+2006,West Bengal,North 24 Parganas,Barasat,TMC,Kalyan Sen,24.8
+2006,West Bengal,North 24 Parganas,Barasat,INC,Manas Roy,16.9
+2011,West Bengal,Kolkata,Kolkata North,TMC,Suman Dey,47.5
+2011,West Bengal,Kolkata,Kolkata North,CPI(M),Anil Banerjee,38.9
+2011,West Bengal,Kolkata,Kolkata North,INC,Rajesh Sharma,10.2
+2011,West Bengal,Howrah,Howrah Central,TMC,Rakesh Shaw,49.3
+2011,West Bengal,Howrah,Howrah Central,CPI(M),Pradip Ghosh,37.6
+2011,West Bengal,Howrah,Howrah Central,INC,Amit Mitra,9.8
+2011,West Bengal,Hooghly,Chandannagar,TMC,Arup Das,48.6
+2011,West Bengal,Hooghly,Chandannagar,CPI(M),Biman Roy,39.1
+2011,West Bengal,Hooghly,Chandannagar,INC,Sanjay Paul,8.5
+2011,West Bengal,North 24 Parganas,Barasat,TMC,Kalyan Sen,51.2
+2011,West Bengal,North 24 Parganas,Barasat,CPI(M),Gautam Deb,36.8
+2011,West Bengal,North 24 Parganas,Barasat,INC,Manas Roy,9.1
+2016,West Bengal,Kolkata,Kolkata North,TMC,Suman Dey,52.8
+2016,West Bengal,Kolkata,Kolkata North,CPI(M),Anil Banerjee,25.4
+2016,West Bengal,Kolkata,Kolkata North,BJP,Arvind Gupta,18.3
+2016,West Bengal,Howrah,Howrah Central,TMC,Rakesh Shaw,54.1
+2016,West Bengal,Howrah,Howrah Central,CPI(M),Pradip Ghosh,24.7
+2016,West Bengal,Howrah,Howrah Central,BJP,Amit Singh,17.9
+2016,West Bengal,Hooghly,Chandannagar,TMC,Arup Das,53.5
+2016,West Bengal,Hooghly,Chandannagar,CPI(M),Biman Roy,23.8
+2016,West Bengal,Hooghly,Chandannagar,BJP,Sanjay Paul,19.2
+2016,West Bengal,North 24 Parganas,Barasat,TMC,Kalyan Sen,56.3
+2016,West Bengal,North 24 Parganas,Barasat,CPI(M),Gautam Deb,22.5
+2016,West Bengal,North 24 Parganas,Barasat,BJP,Manas Roy,18.4
+2021,West Bengal,Kolkata,Kolkata North,TMC,Suman Dey,55.7
+2021,West Bengal,Kolkata,Kolkata North,BJP,Arvind Gupta,32.6
+2021,West Bengal,Kolkata,Kolkata North,CPI(M),Anil Banerjee,7.8
+2021,West Bengal,Howrah,Howrah Central,TMC,Rakesh Shaw,57.9
+2021,West Bengal,Howrah,Howrah Central,BJP,Amit Singh,30.5
+2021,West Bengal,Howrah,Howrah Central,CPI(M),Pradip Ghosh,6.7
+2021,West Bengal,Hooghly,Chandannagar,TMC,Arup Das,56.2
+2021,West Bengal,Hooghly,Chandannagar,BJP,Sanjay Paul,33.1
+2021,West Bengal,Hooghly,Chandannagar,CPI(M),Biman Roy,6.2
+2021,West Bengal,North 24 Parganas,Barasat,TMC,Kalyan Sen,58.4
+2021,West Bengal,North 24 Parganas,Barasat,BJP,Manas Roy,31.9
+2021,West Bengal,North 24 Parganas,Barasat,CPI(M),Gautam Deb,5.8
