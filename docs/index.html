@@ -7,7 +7,7 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Data Labels Plugin -->
+  <!-- DataLabels Plugin -->
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
   <style>
@@ -39,7 +39,6 @@
       margin: auto;
       background: white;
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       padding: 10px;
     }
 
@@ -66,6 +65,9 @@
 
 <script>
 let rawData = [];
+
+// 🔥 IMPORTANT: Register plugin
+Chart.register(ChartDataLabels);
 
 fetch("data.csv")
   .then(res => res.text())
@@ -129,7 +131,6 @@ function drawChart() {
   let labels = filtered.map(d => d.party);
   let data = filtered.map(d => d.vote);
 
-  // Party colors (optional but looks good)
   let colors = {
     "TMC": "#1f77b4",
     "BJP": "#ff7f0e",
@@ -158,6 +159,7 @@ function drawChart() {
         legend: {
           position: "top"
         },
+
         tooltip: {
           callbacks: {
             label: function(context) {
@@ -165,22 +167,21 @@ function drawChart() {
             }
           }
         },
+
         datalabels: {
+          display: true,   // 🔥 force show
           color: "#fff",
           font: {
             weight: "bold",
             size: 14
           },
           formatter: function(value, context) {
-            return context.chart.data.labels[context.dataIndex] + "\n" + value + "%";
-          },
-          display: function(context) {
-            return context.dataset.data[context.dataIndex] > 5; // hide tiny slices
+            let label = context.chart.data.labels[context.dataIndex];
+            return label + "\n" + value + "%";
           }
         }
       }
-    },
-    plugins: [ChartDataLabels]
+    }
   });
 }
 </script>
