@@ -1,674 +1,584 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>AI Prediction Dashboard</title>
-
-  <!-- Materialize -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
-
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <!-- DataLabels -->
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-
-  <style>
-    body {
-      background: #121212;
-      color: #fff;
-    }
-
-    .row {
-      margin-top: 20px;
-    }
-
-    .card {
-      background: #1e1e1e;
-      padding: 15px;
-      border-radius: 12px;
-      height: 100%;
-    }
-
-    .chart-container {
-      height: 60vh;
-    }
-
-    .row.flex {
-      display: flex;
-      align-items: stretch;
-    }
-
-    /* Candidate Panel */
-    .candidate-panel {
-      height: 60vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .candidate-header {
-      background: #1e1e1e;
-      padding: 10px 5px;
-      border-bottom: 1px solid #333;
-    }
-
-    .candidate-header h6 {
-      margin: -5px;
-      text-align: center;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .candidate-body {
-      flex: 1;
-      overflow-y: auto;
-      scroll-behavior: smooth;
-      scrollbar-width: thin;
-      scrollbar-color: #26a69a #1e1e1e;
-    }
-
-    /* Chrome / Edge / Safari */
-    .candidate-body::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    .candidate-body::-webkit-scrollbar-track {
-      background: #1e1e1e;
-      border-radius: 10px;
-    }
-
-    .candidate-body::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, #444, #2a2a2a);
-      border-radius: 10px;
-      border: 1px solid #1e1e1e;
-    }
-
-    .candidate-body::-webkit-scrollbar-thumb:hover {
-      background: #26a69a;
-    }
-
-    #candidateList {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    #candidateList {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    #candidateList li {
-      padding: 10px;
-      margin: 6px 0;
-      border-radius: 8px;
-      background: #2a2a2a;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .winner {
-      border-left: 4px solid #26a69a;
-      background: #1b5e20;
-    }
-
-    .badge-winner {
-      font-size: 16px;
-    }
-
-    .select-dropdown {
-      color: #fff !important;
-    }
-
-    .dropdown-content li>a {
-      color: black !important;
-    }
-
-    /* Style for headers */
-    .header-bar {
-      background: linear-gradient(90deg, #1e1e1e, #000000);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-      border-radius: 5px;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-    }
-    .brand-logo {
-      font-size: 20px !important;
-      font-weight: 600;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Dashboard - Dark Theme</title>
     
-    nav ul li a {
-      color: #ccc !important;
-      font-weight: 500;
-    }
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Materialize -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
     
-    nav ul li.active a {
-      color: #fff !important;
-      border-bottom: 1px solid #26a69a;
-    }
-    
-    nav ul li a:hover {
-      color: #fff !important;
-    }
-
-
-    /* Modal container */
-    .custom-modal {
-      background: #1e1e1e;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-      overflow-x: hidden;
-    }
-
-    /* Title */
-    .modal-title {
-      text-align: center;
-      font-weight: 600;
-      color: #26a69a;
-      margin-bottom: 15px;
-    }
-
-    /* Text */
-    .modal-text {
-      text-align: center;
-      color: #ccc;
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
-
-    .modal-text.subtle {
-      color: #888;
-      font-size: 13px;
-    }
-
-    /* QR section */
-    .qr-container {
-      display: flex;
-      justify-content: center;
-      margin: 15px 0;
-    }
-
-    .qr-container img {
-      width: 180px;
-      max-width: 100%;
-      border-radius: 10px;
-      border: 1px solid #333;
-    }
-
-    /* Scan text */
-    .scan-text {
-      text-align: center;
-      font-size: 13px;
-      color: #aaa;
-    }
-
-    /* Footer */
-    .custom-footer {
-      background: #1e1e1e;
-      text-align: center;
-      border-top: 1px solid #333;
-      display: flex;
-      justify-content: center;
-    }
-
-    /* Close button */
-    .close-btn {
-      color: #26a69a !important;
-      display: inline-block !important;
-      width: auto !important;
-      padding: 6px 18px;
-      border-radius: 6px;
-    }
-
-    .close-btn:hover {
-      color: #4db6ac !important;
-    }
-
-    /* Remove horizontal scroll */
-    .modal, .modal-content {
-      overflow-x: hidden;
-    }
-
-    /* Candidate Tooltip */
-    .candidate-tooltip {
-      position: absolute;
-      background: #000;
-      color: #fff;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      display: none;
-      z-index: 9999;
-      pointer-events: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-      border: 1px solid #333;
-      line-height: 1.5;
-    }
-
-
-    /* Seat Panel */
-    .seat-panel {
-      height: 60vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .seat-body {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding-top: 10px;
-    }
-
-    /* Seat square blocks */
-    .seat-box {
-      height: 80px;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-weight: bold;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-    }
-
-    .seat-box span {
-      font-size: 12px;
-      color: #ddd;
-    }
-
-    .seat-count {
-      font-size: 22px;
-    }
-  </style>
-</head>
-
-<body>
-  <nav class="header-bar">
-    <div class="nav-wrapper container">
-      <!-- Logo / Title -->
-      <a href="index.html" class="brand-logo">West Bengal Assembly Elections 2026</a>
-      <!-- Desktop Menu -->
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li class="active"><a href="index.html">AI-Prediction</a></li>
-        <li><a href="past-wb.html">Past Elections</a></li>
-      </ul>
-    </div>
-  </nav>
-<div class="container">
-  <!-- Filters -->
-  <div class="row">
-    <div class="input-field col s12 m6">
-      <select id="district">
-        <option value="" selected>All Districts</option>
-      </select>
-      <label>District</label>
-    </div>
-
-    <div class="input-field col s12 m6">
-      <select id="constituency" disabled>
-        <option value="" selected>All Constituencies</option>
-      </select>
-      <label>Constituency</label>
-    </div>
-  </div>
-
-  <!-- Layout -->
-  <div class="row flex">
-    <!-- LEFT: Candidates -->
-    <div class="col s12 m3">
-      <div class="card candidate-panel">
-        <div class="candidate-header">
-          <h6>Candidates</h6>
-        </div>
-        <div class="candidate-body">
-          <ul id="candidateList"></ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- MIDDLE: Chart -->
-    <div class="col s12 m7">
-      <div class="card chart-container">
-        <canvas id="chart"></canvas>
-      </div>
-    </div>
-
-    <!-- RIGHT: Seat Count -->
-    <div class="col s12 m2">
-      <div class="card seat-panel">
-        <div class="candidate-header">
-          <h6>Seats Prediction</h6>
-        </div>
-        <div class="seat-body" id="seatPanel"></div>
-      </div>
-    </div>
-
-  </div>
-
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
-<script>
-Chart.register(ChartDataLabels);
-
-let rawData = [];
-let chart;
-
-const colors = {
-  "TMC": "#006400",
-  "BJP": "#FF8400",
-  "CPI(M)": "#FF0000",
-  "INC": "#009DFF",
-  "OTHERS": "#888888"
-};
-
-// Load CSV
-fetch("ai-prediction.csv")
-  .then(res => res.text())
-  .then(csv => {
-    rawData = csv.split("\n").slice(1).map(r => {
-      let c = r.replace("\r", "").split(",");
-      return {
-        district: c[1],
-        constituency: c[2],
-        party: c[3],
-        candidate: c[4],
-        value: parseFloat(c[5])
-      };
-    });
-
-    initDistrict();
-    M.FormSelect.init(document.querySelectorAll('select'));
-    drawChart();
-  });
-
-const districtEl = document.getElementById("district");
-const constituencyEl = document.getElementById("constituency");
-
-// Init district
-function initDistrict() {
-  let districts = [...new Set(rawData.map(d => d.district))].sort();
-  districts.forEach(d => districtEl.add(new Option(d, d)));
-}
-
-// District change
-districtEl.onchange = () => {
-  constituencyEl.innerHTML = '<option value="" selected>All Constituencies</option>';
-
-  if (!districtEl.value) {
-    constituencyEl.disabled = true;
-  } else {
-    constituencyEl.disabled = false;
-
-    let filtered = rawData.filter(d => d.district === districtEl.value);
-    let cons = [...new Set(filtered.map(d => d.constituency))].sort();
-
-    cons.forEach(c => constituencyEl.add(new Option(c, c)));
-  }
-
-  M.FormSelect.init(document.querySelectorAll('select'));
-  drawChart();
-};
-
-constituencyEl.onchange = drawChart;
-
-// Core logic
-function drawChart() {
-  let filtered;
-
-  if (!districtEl.value) {
-    filtered = rawData;
-  } else if (!constituencyEl.value) {
-    filtered = rawData.filter(d => d.district === districtEl.value);
-  } else {
-    filtered = rawData.filter(d =>
-      d.district === districtEl.value &&
-      d.constituency === constituencyEl.value
-    );
-  }
-
-  // Count constituencies
-  let constituencyCount = new Set(filtered.map(d => d.constituency)).size || 1;
-
-  // Aggregate
-  let result = {};
-  let candidateMap = {};
-
-  filtered.forEach(d => {
-    result[d.party] = (result[d.party] || 0) + d.value;
-
-    if (!candidateMap[d.party]) candidateMap[d.party] = [];
-    candidateMap[d.party].push(d.candidate);
-  });
-
-  // Average
-  Object.keys(result).forEach(p => {
-    result[p] = result[p] / constituencyCount;
-  });
-
-  let labels = Object.keys(result);
-  let data = Object.values(result);
-
-  // Candidate panel
-  let list = document.getElementById("candidateList");
-  list.innerHTML = "";
-
-  if (districtEl.value && constituencyEl.value) {
-    let maxVote = Math.max(...filtered.map(d => d.value));
-
-    filtered.forEach(d => {
-      let li = document.createElement("li");
-      li.innerText = d.candidate + " (" + d.party + ")";
-
-      if (d.value === maxVote) {
-        li.classList.add("winner");
-
-        let trophy = document.createElement("span");
-        trophy.className = "badge-winner";
-        trophy.innerText = "🏆";
-        li.appendChild(trophy);
-      }
-
-       // 🔥 TOOLTIP
-        li.onmousemove = (e) => {
-          let tooltip = document.getElementById("candidateTooltip");
-          tooltip.style.display = "block";
-          tooltip.style.left = (e.pageX + 10) + "px";
-          tooltip.style.top = (e.pageY + 10) + "px";
-
-          tooltip.innerHTML = `
-            District: ${d.district}<br>
-            Constituency: ${d.constituency}<br>
-            Winning Prediction: ${d.value}%
-          `;
-        };
-
-        li.onmouseleave = () => {
-          document.getElementById("candidateTooltip").style.display = "none";
-        };
-
-      list.appendChild(li);
-    });
-
-  } else {
-    let group = {};
-  
-    // group by constituency
-    filtered.forEach(d => {
-      if (!group[d.constituency]) group[d.constituency] = [];
-      group[d.constituency].push(d);
-    });
-  
-    // ✅ get ONE winner per constituency
-    let winners = Object.values(group).map(arr =>
-      arr.reduce((a, b) => a.value > b.value ? a : b)
-    );
-  
-    // ✅ sort alphabetically
-    winners.sort((a, b) => a.candidate.localeCompare(b.candidate));
-  
-    // ✅ render ONCE
-    winners.forEach(winner => {
-      let li = document.createElement("li");
-      li.classList.add("winner");
-      li.innerText = winner.candidate + " (" + winner.party + ")";
-  
-      let trophy = document.createElement("span");
-      trophy.className = "badge-winner";
-      trophy.innerText = "🏆";
-  
-      li.appendChild(trophy);
-      // 🔥 TOOLTIP
-      li.onmousemove = (e) => {
-        let tooltip = document.getElementById("candidateTooltip");
-        tooltip.style.display = "block";
-        tooltip.style.left = (e.pageX + 10) + "px";
-        tooltip.style.top = (e.pageY + 10) + "px";
-
-        tooltip.innerHTML = `
-          District: ${winner.district}<br>
-          Constituency: ${winner.constituency}<br>
-          Winning Prediction: ${winner.value}%
-        `;
-      };
-
-      li.onmouseleave = () => {
-        document.getElementById("candidateTooltip").style.display = "none";
-      };
-      list.appendChild(li);
-    });
-  }
-
-
-  // 🆕 ===== SEAT COUNT LOGIC =====
-let seatResult = {
-  "TMC": 0,
-  "BJP": 0,
-  "INC": 0,
-  "OTHERS": 0
-};
-
-// group by constituency
-let group = {};
-filtered.forEach(d => {
-  if (!group[d.constituency]) group[d.constituency] = [];
-  group[d.constituency].push(d);
-});
-
-// winner per constituency
-Object.values(group).forEach(arr => {
-  let winner = arr.reduce((a, b) => a.value > b.value ? a : b);
-
-  if (seatResult[winner.party] !== undefined) {
-    seatResult[winner.party]++;
-  } else {
-    seatResult["OTHERS"]++;
-  }
-});
-
-// 🆕 RENDER
-let seatPanel = document.getElementById("seatPanel");
-seatPanel.innerHTML = "";
-
-Object.keys(seatResult).forEach(party => {
-  let box = document.createElement("div");
-  box.className = "seat-box";
-  box.style.background = colors[party];
-
-  box.innerHTML = `
-    <span>${party}</span>
-    <div class="seat-count">${seatResult[party]}</div>
-  `;
-
-  seatPanel.appendChild(box);
-});
-
-  if (chart) chart.destroy();
-
-  chart = new Chart(document.getElementById("chart"), {
-    type: "pie",
-    data: {
-      labels: labels,
-      datasets: [{
-        data: data,
-        backgroundColor: labels.map(l => colors[l] || "#888")
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        datalabels: {
-          color: "#fff",
-          font: { weight: "bold", size: 10 },
-          formatter: (value, ctx) =>
-            ctx.chart.data.labels[ctx.dataIndex] + "\n" + value.toFixed(1) + "%"
-        },
-
-        tooltip: {
-          callbacks: {
-            label: function(context) {
-              let party = context.label;
-              let value = context.raw.toFixed(1);
-              let candidates = candidateMap[party].join(", ");
-
-              return [
-                "Winning Prediction: " + value + "%"
-              ];
-            }
-          }
+    <!-- Chart.js and DataLabels Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+    <style>
+        /* ==========================================
+           MATERIAL DARK THEME & FULL SCREEN LAYOUT
+           ========================================== */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: #121212; 
+            color: #e0e0e0; 
+            font-family: 'Roboto', sans-serif;
+            height: 100vh;
+            width: 100vw; 
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; 
+            margin: 0;
         }
-      }
-    }
-  });
-}
 
-document.addEventListener('DOMContentLoaded', function() {
-  var elems = document.querySelectorAll('.modal');
-  M.Modal.init(elems);
-});
+        .dashboard-wrapper {
+            width: 90vw;
+            margin: 16px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+            min-height: 0; 
+        }
 
-</script>
-    <!-- FOOTER -->
-    <footer>
-      <div class="nav-wrapper" style="text-align:center;">
+        .card {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+            margin: 0; 
+        }
+
+        /* ==========================================
+           TOP NAVIGATION HEADER
+           ========================================== */
+        .header-bar {
+            background: linear-gradient(90deg, #1e1e1e, #000000);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            width: 100%; 
+            margin: 0;
+            padding: 0;
+        }
         
-        <a href="#supportModal" class="modal-trigger" style="font-size:14px; color:#26a69a; font-weight:500;">
-          Support Us ❤️
-        </a>
+        .header-bar .nav-wrapper {
+            width: 90vw;
+            margin: 0 auto;
+        }
 
-      </div>
-    </footer>
+        .brand-logo {
+            font-size: 20px !important;
+            font-weight: 600;
+        }
+      
+        nav ul li a {
+            color: #ccc !important;
+            font-weight: 500;
+        }
+      
+        nav ul li.active a {
+            color: #fff !important;
+            border-bottom: 2px solid #26a69a; 
+        }
+      
+        nav ul li a:hover {
+            color: #fff !important;
+            background-color: rgba(255,255,255,0.05); 
+        }
 
-    <!-- MODAL -->
-    <div id="supportModal" class="modal custom-modal">
-      <div class="modal-content">
-        <h5 class="modal-title">Support Independent Analysis</h5>
-        <p class="modal-text">
-          This election dashboard is built to provide clean, data-driven insights without bias.
-          If you find value in this work, consider contributing.
-        </p>
-        <p class="modal-text subtle">
-          Your support helps us maintain data accuracy, improve visualizations, and keep this platform running.
-        </p>
-        <!-- QR -->
-        <div class="qr-container">
-          <img src="images/qr.png" alt="Donate QR">
+        /* ==========================================
+           1. TV BROADCAST HEADER (FIXED HEIGHT)
+           ========================================== */
+        .header-card {
+            flex: 0 0 110px; 
+            background: linear-gradient(135deg, #dfc059 0%, #fbf2c6 25%, #b8860b 50%, #fbf2c6 75%, #dfc059 100%);
+            border: 3px solid #8b6508;
+            padding: 8px;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            justify-content: space-between;
+            gap: 12px;
+            overflow: hidden;
+        }
+
+        .party-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-radius: 4px;
+            border: 2px solid #fff;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bjp-panel { background: linear-gradient(to bottom, #f57c00, #e65100); }
+        .tmc-panel { background: linear-gradient(to bottom, #2e7d32, #1b5e20); }
+
+        .party-header-bar {
+            background: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 12px;
+            color: #000;
+            font-weight: 900;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .party-name { font-size: 1.2rem; letter-spacing: -0.5px; }
+        .trend { font-size: 0.95rem; display: flex; align-items: center; gap: 4px; }
+        .trend.up { color: #2e7d32; }
+        .trend.down { color: #c62828; }
+
+        .score-number {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 1;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            margin-top: -4px;
+        }
+
+        .center-panel {
+            flex: 0 0 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .state-name {
+            background: linear-gradient(to bottom, #5c2e0b, #3e1f07);
+            color: #ffffff;
+            border: 2px solid #ffca28;
+            border-radius: 20px;
+            padding: 4px 20px;
+            font-size: 1.1rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+        }
+
+        .total-seats {
+            background: #c62828;
+            color: #ffffff;
+            border-radius: 4px;
+            padding: 2px 16px;
+            font-size: 1.2rem;
+            font-weight: 900;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .small-parties { display: flex; gap: 8px; }
+
+        .mini-tag {
+            background: #fff;
+            color: #000;
+            display: flex;
+            font-size: 0.75rem;
+            font-weight: 900;
+            border-radius: 3px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .mini-tag span:first-child { padding: 2px 6px; }
+        .bg-red { background: #c62828; color: #fff; padding: 2px 6px; }
+        .bg-blue { background: #1565c0; color: #fff; padding: 2px 6px; }
+
+        /* ==========================================
+           2. BOTTOM SPLIT (CHART + TABLE)
+           ========================================== */
+        .content-split {
+            display: flex;
+            flex-direction: row;
+            flex: 1; 
+            gap: 16px;
+            min-height: 0; 
+        }
+
+        .chart-section {
+            flex: 1;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ==========================================
+           3. TABLE & CUSTOM DARK SCROLLBAR
+           ========================================== */
+        .table-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0; 
+            background-color: #1e1e1e;
+        }
+
+        .table-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            border-radius: 8px;
+            scrollbar-width: thin;
+            scrollbar-color: #555 #2a2a2a;
+        }
+
+        .table-wrapper::-webkit-scrollbar { width: 12px; }
+        .table-wrapper::-webkit-scrollbar-track { background: #2a2a2a; border-radius: 0 8px 8px 0; }
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background-color: #555; 
+            border-radius: 10px; 
+            border: 3px solid #2a2a2a; 
+        }
+        .table-wrapper::-webkit-scrollbar-thumb:hover { background-color: #757575; }
+
+        table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.95rem; }
+
+        th {
+            position: sticky;
+            top: 0;
+            background-color: #2c2c2c; 
+            color: #ffffff;
+            padding: 14px 12px;
+            font-weight: 700;
+            z-index: 10; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        th.col-party { text-align: left; }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            color: #b0bec5;
+        }
+
+        tr:hover td { background-color: rgba(255,255,255,0.05); }
+
+        .party-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        .party-logo {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        tr.nda td:first-child { border-left: 4px solid #f57c00; }
+        tr.aitc td:first-child { border-left: 4px solid #43a047; }
+        tr.lf td:first-child { border-left: 4px solid #e53935; }
+        tr.none td:first-child { border-left: 4px solid #9e9e9e; }
+
+        @media (max-width: 900px) {
+            .content-split { flex-direction: column; }
+            .header-card { height: 90px; }
+            .score-number { font-size: 2.8rem; }
+            .center-panel { flex: 0 0 160px; }
+            .state-name { font-size: 0.9rem; padding: 2px 10px; }
+            .dashboard-wrapper { width: 96vw; } 
+            .header-bar .nav-wrapper { width: 96vw; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP NAVIGATION MENU -->
+    <nav class="header-bar">
+        <div class="nav-wrapper">
+          <a href="index.html" class="brand-logo">West Bengal Assembly Elections 2026</a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li class="active"><a href="index.html">Current Trends</a></li>
+            <li><a href="ai_prediction_wb.html">AI-Prediction</a></li>
+            <li><a href="past-wb.html">Past Elections</a></li>
+          </ul>
         </div>
-        <p class="scan-text">
-          Scan to contribute via UPI
-        </p>
-      </div>
-      <div class="modal-footer custom-footer">
-        <a href="#!" class="modal-close btn-flat close-btn">Close</a>
-      </div>
-    </div>
-    <div id="candidateTooltip" class="candidate-tooltip"></div>
+    </nav>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <div class="dashboard-wrapper">
+        
+        <!-- 1. BROADCAST HEADER -->
+        <div class="card header-card">
+            <div class="party-panel bjp-panel">
+                <div class="party-header-bar">
+                    <span class="party-name">BJP</span>
+                    <span class="trend" id="trend-bjp">--</span>
+                </div>
+                <div class="score-number" id="header-bjp">--</div>
+            </div>
+
+            <div class="center-panel">
+                <div class="state-name">WEST BENGAL</div>
+                <div class="total-seats" id="header-total">--/293</div>
+                <div class="small-parties">
+                    <div class="mini-tag"><span>CPM</span><span class="bg-red" id="val-cpm">00</span></div>
+                    <div class="mini-tag"><span>INC</span><span class="bg-blue" id="val-inc">00</span></div>
+                </div>
+            </div>
+
+            <div class="party-panel tmc-panel">
+                <div class="party-header-bar">
+                    <span class="party-name">TMC+</span>
+                    <span class="trend" id="trend-tmc">--</span>
+                </div>
+                <div class="score-number" id="header-tmc">--</div>
+            </div>
+        </div>
+
+        <!-- 2. CONTENT SPLIT -->
+        <div class="content-split">
+            
+            <div class="card chart-section">
+                <div class="chart-container">
+                    <canvas id="seatsChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card table-section">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="col-party">Party</th>
+                                <th>Lead</th>
+                                <th>Won</th>
+                                <th>Total</th>
+                                <th>2020</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <!-- Data injected via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div> <!-- /dashboard-wrapper -->
+
+    <!-- ==========================================
+         JAVASCRIPT / DATA LOGIC
+         ========================================== -->
+    <script>
+        const partyDataMap = {
+            'BJP':  { color: '#fb8c00', alliance: 'nda', initial: 'B' },
+            'AITC': { color: '#43a047', alliance: 'aitc', initial: 'T' },
+            'INC':  { color: '#1e88e5', alliance: 'none', initial: 'C' },
+            'CPM':  { color: '#e53935', alliance: 'lf', initial: 'M' },
+            'AIFB': { color: '#e53935', alliance: 'lf', initial: 'F' },
+            'CPI':  { color: '#e53935', alliance: 'lf', initial: 'P' },
+            'IND':  { color: '#9e9e9e', alliance: 'none', initial: 'I' },
+            'RSMP': { color: '#9e9e9e', alliance: 'none', initial: 'R' },
+            'BGPM': { color: '#fdd835', alliance: 'aitc', initial: '🛠' },
+            'OTH':  { color: '#757575', alliance: 'none', initial: 'O' }
+        };
+
+        fetch('wb_trends.csv')
+            .then(response => {
+                if (!response.ok) throw new Error("Could not load wb_trends.csv.");
+                return response.text();
+            })
+            .then(csvText => {
+                const parsedData = parseCSV(csvText);
+                updateDashboard(parsedData);
+            })
+            .catch(error => {
+                document.getElementById('table-body').innerHTML = `<tr><td colspan="5" style="color:#ff5252; padding: 20px;">Error: ${error.message}<br>Make sure you are running a local server.</td></tr>`;
+            });
+
+        function parseCSV(str) {
+            const lines = str.trim().split('\n');
+            const headers = lines[0].split(',');
+            const rows = [];
+            for (let i = 1; i < lines.length; i++) {
+                const vals = lines[i].split(',');
+                if (vals.length === headers.length) {
+                    rows.push({
+                        party: vals[0].trim(),
+                        lead: parseInt(vals[1].trim(), 10),
+                        won: parseInt(vals[2].trim(), 10),
+                        total: parseInt(vals[3].trim(), 10),
+                        prev2020: parseInt(vals[4].trim(), 10) 
+                    });
+                }
+            }
+            return rows;
+        }
+
+        function updateDashboard(data) {
+            let totalSeats = 0;
+            let bjpSeats = 0;
+            let tmcSeats = 0;
+            let cpmSeats = 0;
+            let incSeats = 0;
+            
+            // Deltas
+            let bjpseatdelta = 0;
+            let tmcseatdelta = 0;
+
+            const tableBody = document.getElementById('table-body');
+            const chartLabels = [];
+            const chartData = [];
+            const chartColors = [];
+
+            data.forEach(row => {
+                const partyInfo = partyDataMap[row.party] || { color: '#9e9e9e', alliance: 'none', initial: row.party.charAt(0) };
+                
+                totalSeats += row.total;
+                
+                if (row.party === 'BJP') {
+                    bjpSeats += row.total;
+                    bjpseatdelta += (row.total - row.prev2020); 
+                }
+                if (row.party === 'AITC') {
+                    tmcSeats += row.total;
+                    tmcseatdelta += (row.total - row.prev2020);
+                }
+                if (row.party === 'CPM') {
+                    cpmSeats += row.total;
+                }
+                if (row.party === 'INC') {
+                    incSeats += row.total;
+                }
+
+                if (row.total > 0) {
+                    chartLabels.push(row.party);
+                    chartData.push(row.total);
+                    chartColors.push(partyInfo.color);
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = partyInfo.alliance;
+                tr.innerHTML = `
+                    <td>
+                        <div class="party-cell">
+                            <div class="party-logo" style="color:${partyInfo.color}; border: 1px solid ${partyInfo.color}">${partyInfo.initial}</div>
+                            ${row.party}
+                        </div>
+                    </td>
+                    <td>${row.lead}</td>
+                    <td>${row.won}</td>
+                    <td style="color:#fff; font-weight:700">${row.total}</td>
+                    <td>${row.prev2020}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+
+            // Update main center and header numbers
+            document.getElementById('header-total').innerText = `${totalSeats}/293`;
+            document.getElementById('header-bjp').innerText = bjpSeats;
+            document.getElementById('header-tmc').innerText = tmcSeats;
+            
+            // Format small party numbers (pads with leading 0 if less than 10)
+            document.getElementById('val-cpm').innerText = cpmSeats < 10 ? '0' + cpmSeats : cpmSeats;
+            document.getElementById('val-inc').innerText = incSeats < 10 ? '0' + incSeats : incSeats;
+            
+            // --- DYNAMIC TREND FORMATTING ---
+            const bjpTrendEl = document.getElementById('trend-bjp');
+            if (bjpseatdelta > 0) {
+                bjpTrendEl.className = "trend up";
+                bjpTrendEl.innerText = `▲ ${bjpseatdelta}`;
+            } else if (bjpseatdelta < 0) {
+                bjpTrendEl.className = "trend down";
+                bjpTrendEl.innerText = `▼ ${Math.abs(bjpseatdelta)}`;
+            } else {
+                bjpTrendEl.className = "trend";
+                bjpTrendEl.innerText = `- 0`;
+            }
+
+            const tmcTrendEl = document.getElementById('trend-tmc');
+            if (tmcseatdelta > 0) {
+                tmcTrendEl.className = "trend up";
+                tmcTrendEl.innerText = `▲ ${tmcseatdelta}`;
+            } else if (tmcseatdelta < 0) {
+                tmcTrendEl.className = "trend down";
+                tmcTrendEl.innerText = `▼ ${Math.abs(tmcseatdelta)}`;
+            } else {
+                tmcTrendEl.className = "trend";
+                tmcTrendEl.innerText = `- 0`;
+            }
+            
+            // Draw Chart
+            drawChart(chartLabels, chartData, chartColors);
+        }
+
+        function drawChart(labels, data, colors) {
+            Chart.register(ChartDataLabels);
+            const ctx = document.getElementById('seatsChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors,
+                        borderColor: '#fff',
+                        borderWidth: 1,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: { padding: 20 },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.85)',
+                            titleFont: { size: 14, family: 'Roboto' },
+                            bodyFont: { size: 15, family: 'Roboto', weight: 'bold' },
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) { return `${context.label}: ${context.raw} Seats`; }
+                            }
+                        },
+                        datalabels: {
+                            display: function(context) {
+                                return context.dataset.data[context.dataIndex] >= 10;
+                            },
+                            color: '#ffffff',
+                            font: { family: 'Roboto', weight: 'bold', size: 14 },
+                            textShadowColor: 'rgba(0, 0, 0, 0.9)',
+                            textShadowBlur: 6,
+                            formatter: (value, ctx) => {
+                                const label = ctx.chart.data.labels[ctx.dataIndex];
+                                return `${label}\n${value}`;
+                            },
+                            textAlign: 'center'
+                        }
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>
